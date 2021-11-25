@@ -14,9 +14,9 @@ class detailController extends Controller
     {  
         
         $data = $request->json()->all();
-        $tel = $request->input('teldetail');
+        $tel = Session::get('getuser');
         
-        $sql = "SELECT fnamelname, datebook,timebook,place FROM vaccination_detail WHERE tel ='$tel' ";
+        $sql = "SELECT fnamelname, datebook,timebook,place FROM vaccination_detail WHERE tel = \"$tel\" ";
         \Log::info($sql);
         $dataname['dataName'] = DB::select($sql);
 
