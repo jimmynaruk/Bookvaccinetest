@@ -66,9 +66,12 @@ body {
         </div>
         <div class="p-3 px-4 py-4 border-bottom"> 
         @if (Session::get('haslogin') == 1)
-        <label for="cars">เบอร์โทรศัพท์:</label>
-        <input type="text" id="teltxt" class="form-control" onkeypress="return chkNumber(this)" value="{{Session::get('getuser')}}" maxlength="10" disabled/>
+        <label for="cars">เบอร์โทรศัพท์:
+        <input type="text" id="teltxt" class="form-control" onkeypress="return chkNumber(this)" value="{{Session::get('getuser')}}" maxlength="10" hidden/>{{Session::get('getuser')}}</label>
         @endif
+        <div >
+ <a class="btn btn-primary" href="{{URL::TO('bookdetail')}}"> &nbsp;ดูข้อมูลการจองของคุณ</a>
+</div>
         <br>
         <label for="cars">กรอกชื่อนามสกุล:</label>
         <input type="text" id="nametxt"class="form-control mb-2" placeholder="กรอกชื่อ - นามสกุล" />
@@ -167,4 +170,6 @@ function Checkbook(){
 	if ((vchar<'0' || vchar>'9') && (vchar != '.')) return false;
 	ele.onKeyPress=vchar;
   }
+
+  
 </script>

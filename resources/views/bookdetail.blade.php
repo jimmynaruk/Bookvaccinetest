@@ -73,8 +73,8 @@ body {
         <div class="form-group">
         @if (Session::get('haslogin') == 1)
         <label for="recipient-name" class="col-form-label">&nbsp;&nbsp;&nbsp;หมายเลขโทรศัพท์: 
-          <input id="teldetail"   value="{{Session::get('getuser')}}" disabled></label>
-          <input id="subtxt"  type="submit">
+          <input id="teldetail"   value="{{Session::get('getuser')}}" hidden>{{Session::get('getuser')}}</label>
+         
         @endif
         @foreach($dataname['dataName'] as $var)
         </div>
@@ -96,8 +96,8 @@ body {
                
               </div>
         @endforeach
-       
-        <img src="img/Poster-5-ข้อทำให้ครับก่อนฉีด.jpg"width = "700" height = "750">
+        <a class="btn btn-primary btn-block" href="{{URL::TO('bookvaccine')}}"> &nbsp;ลงทะเบียนจองวัคซีน</a>
+        <img src="img/Poster-5.jpg"width = "700" height = "750">
         </div>
         
             

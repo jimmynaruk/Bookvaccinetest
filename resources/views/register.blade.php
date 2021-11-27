@@ -112,7 +112,7 @@ body {
         <div class="p-3 border-bottom d-flex align-items-center justify-content-center">
             <h5>เบอร์โทรศัพท์มือถือ / Mobile Number</h5>
         </div>
-            <div class="p-3 px-4 py-4 border-bottom"> <input type="text" id="idteltxt"class="form-control mb-2" placeholder="กรอกเบอร์โทรศัพท์" />
+            <div class="p-3 px-4 py-4 border-bottom"> <input type="text" id="idteltxt"class="form-control mb-2"onkeypress="return chkNumber(this)"  maxlength="10"placeholder="กรอกเบอร์โทรศัพท์" />
 
             <button class="btn btn-success btn-block " onclick="createUser();">ลงทะเบียน</button>
             <button class="btn btn-primary btn-block " onclick="Checklogin();">เข้าสู่ระบบ</button>
@@ -124,29 +124,7 @@ body {
 </div>
 </html>
 <script>
-    function Checklogin(){
-        idteltxt = $("#idteltxt").val();
-		
-		$.ajax({
-        type:"POST",
-        url:'{{URL::to("register/login")}}', 
-        data:{
-            idteltxt: idteltxt,
-          _token:"{{ csrf_token() }}"
-          },success:function(result){
-		   alert(result.message);
-           window.location="http://localhost/Bookvaccinetest/public/bookvaccine";
-          },fail:function(result,status,error){
-            alert('failFunction');
-          },error:function(result,status,error){
-            console.log(result);
-            console.log(status);
-            console.log(error);
-            alert('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง');
-          }
-        
-      })
-	}	
+  
 function createUser(){
            
             idteltxt = $("#idteltxt").val();
@@ -202,15 +180,15 @@ function createUser(){
             idteltxt: idteltxt,
           _token:"{{ csrf_token() }}"
           },success:function(result){
-		   alert(result.message);
-           window.location="http://localhost/Bookvaccinetest/public/bookvaccine";
+		      alert(result.message);
+          window.location="http://localhost/Bookvaccinetest/public/bookvaccine";
+       
           },fail:function(result,status,error){
             alert('failFunction');
           },error:function(result,status,error){
-            console.log(result);
-            console.log(status);
-            console.log(error);
-            alert('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง');
+            let msg = result.responseJSON.message
+           
+               alert(msg);
           }
         
       })

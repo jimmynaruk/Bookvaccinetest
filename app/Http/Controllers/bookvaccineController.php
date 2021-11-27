@@ -13,9 +13,12 @@ class bookvaccineController extends Controller
     public function index (Request $request)
     {  
        
-        $data = $request->json()->all();
-       
-       
+        if(Session::get('haslogin') == 0 ){
+            
+            return redirect('register');
+           
+        }
+        
         return view('bookvaccine');
     }
 
@@ -62,7 +65,7 @@ class bookvaccineController extends Controller
         $checktel_sql =  $this->sql_check_tel($tel);
         if($checktel_sql){
 
-            throw new  \Exception("หมายเลขโทรศัพท์นี้ทำการจองวัคซีนไปแล้ว");
+            throw new  \Exception("หมายเลขโทรศัพท์นี้ทำการจองวัคซีนไปแล้ว สามารถตรวจสอบข้อมูลการจองฉีดวัคซีนได้ที่ปุ่ม ดูข้อมูลการจองของคุณ");
 
         }else{
         
@@ -102,6 +105,51 @@ class bookvaccineController extends Controller
             }
         }
         
+    }
+
+        public function checkbookdata(Request $request)
+    {
+        \Log::info("[".__METHOD__."]"."start");
+        try{
+            $data = $request->json()->all();
+
+            $tel = $request->input('teltxt');
+            $datadetail = $this->check_username($tel);
+            \Log::info($tel);
+           
+           
+
+            return \Response::json(['message' => 'ตรวจสอบข้อมูลการลงทะเบียนฉีดวัคซีน'], 200);
+
+        }catch(\Exception $e){
+        
+            \Log::error('[' . __METHOD__ . '][' . $e->getFile() . '][line : ' . $e->getLine() . '][' . $e->getMessage() . ']');
+
+            return \Response::json(['message' => $e->getMessage()], 500);
+            
+        }
+    }
+
+    public function check_username($tel){
+
+
+        $checkdata_sql =  $this->sql_check_bookdata($tel);
+        if(empty($checkdata_sql)){
+
+            throw new  \Exception("ท่านยังไม่ได้ทำการจองวัคซีนกรุณาทำรายก่อนเข้าดูข้อมูล");
+
+        }else{
+        
+        }
+
+    }
+    //เช็คว่ามีข้อมูลจองแล้วหรือยัง
+    public function sql_check_bookdata($tel){
+    $sql = "select tel from vaccination_detail
+    where tel = \"$tel\"";
+    $dataset= DB::select($sql);
+    \Log::info($dataset);
+    return $dataset;
     }
 
 }

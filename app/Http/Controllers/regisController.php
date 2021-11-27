@@ -10,9 +10,16 @@ class regisController extends Controller
 {
     public function index(Request $request)
     {   
+
+        $data = $request->json()->all();
+        $getdetailtel =  $this->sql_datadetail($tel);
+
+        
+
         Session::put('haslogin',0);
        
         return view('register');
+
 
     }
 
@@ -59,7 +66,7 @@ class regisController extends Controller
         $sql = "select tel from user_tb
         where tel = \"$tel\"";
         $dataset= DB::select($sql);
-
+        //\Log::info($dataset);
         return $dataset;
     }
     
@@ -69,19 +76,28 @@ class regisController extends Controller
         \Log::info("[".__METHOD__."]"."start");
       try{
         $tel = $request->input('idteltxt');
-       
        \Log::info($tel);
-
+       //\Log::info($checktellogin);
+       $getdetailtel =  $this->sql_check_telbase($tel);
+       if(empty($getdetailtel)){
+        Session::put('haslogin',0);
+        
+       
+        throw new  \Exception("เบอร์โทรศัพท์นี้ยังไม่ได้ลงทะเบียนกรุณาลงทะเบียน");
+       
+    }
+      
         Session::put('getuser',$tel);
         Session::put('haslogin',1);
       
-        
         if(Session::get('haslogin') == 0 ){
             
-            return Redirect::to('home');
-           
+            return Redirect::to('register');
+            
         }
+        
         return \Response::json(['message' => "เข้าสู่ระบบเรียบร้อย"]);
+        
         }catch(\Exception $e){
     
             \Log::error('[' . __METHOD__ . '][' . $e->getFile() . '][line : ' . $e->getLine() . '][' . $e->getMessage() . ']');
@@ -91,7 +107,22 @@ class regisController extends Controller
         }
 
     }
-   
-  
+
+    //เช็คเบอร์โทรศัพท์ว่าลงทะเบียนแล้วหรือยัง
+    public function sql_check_telbase($tel){
+        $sql1 = "select tel from user_tb
+        where tel = \"$tel\"";
+        $dataset= DB::select($sql1);
+        \Log::info($dataset);
+        return $dataset;
+    }
+    
+    public function sql_datadetail($tel){
+        $sql1 = "select tel from vaccination_detail
+        where tel = \"$tel\"";
+        $dataset= DB::select($sql1);
+        \Log::info($dataset);
+        return $dataset;
+    }
     
 }

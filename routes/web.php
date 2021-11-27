@@ -24,8 +24,9 @@ Route::get('/bookdetail', function () {
     return view('bookdetail');
 });
 Route::prefix('bookdetail')->group(function () {
-    Route::resource('','\App\Http\Controllers\detailController');
-    });    
+Route::resource('','\App\Http\Controllers\detailController');
+
+ });    
 
 Route::prefix('register')->group(function () {
     Route::post('createUser','\App\Http\Controllers\regisController@createUser');
@@ -35,6 +36,7 @@ Route::prefix('register')->group(function () {
 Route::prefix('bookvaccine')->group(function () {
 Route::resource('','\App\Http\Controllers\bookvaccineController');
 Route::post('saveBookVac','\App\Http\Controllers\bookvaccineController@saveBookVac');
+Route::post('checkbookdata','\App\Http\Controllers\bookvaccineController@checkbookdata');
 });    
 
 Route::prefix('bookdetail')->group(function () {
